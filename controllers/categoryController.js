@@ -1,4 +1,5 @@
 const Category = require('../models/category');
+const Grocery = require('../models/grocery');
 
 const { body, validationResult } = require('express-validator');
 const async = require('async');
@@ -24,8 +25,23 @@ exports.category_list = (req, res) => {
 };
 
 // Display single category
-exports.category_detail = (req, res) => {
-  res.send('Not implemented yet, category_detail');
+exports.category_detail = (req, res, next) => {
+  async.parallel({
+    category: function(callback) {
+      Category.findById(req.params.id).exec(callback) 
+    },
+    grocery_list: function(callback) {
+      Grocery.find({ 'category': req.params.id }).exec(callback)
+    },
+  }, function(err, results) {
+      if (err) { return next(err); }
+      if (results.category==null) {
+        var err = new Error('Category not found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('category_detail', { title: 'Category Detail', category: results.category, grocery_list: results.grocery_list })
+  });
 };
 
 // Update a category

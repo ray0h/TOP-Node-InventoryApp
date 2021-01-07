@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h2 Category: #{category.name}
+
+  p #{category.description}
+  
+  div
+    h4 Available Items
+    ul
+      each grocery in grocery_list
+        li 
+          a(href=grocery.url) #{grocery.name}
+      else
+        li This category currently has no items
