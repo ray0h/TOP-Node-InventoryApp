@@ -1,4 +1,5 @@
 const Location = require('../models/location');
+const Grocery = require('../models/grocery');
 
 const { body, validationResult } = require('express-validator');
 const async = require('async');
@@ -14,12 +15,33 @@ exports.location_create_post = (req, res) => {
 
 // Display list of all locations
 exports.location_list = (req, res) => { 
-  res.send('Not implemented yet, location_list');
+  Location.find()
+    .sort([['name', 'ascending']])  
+    .exec((err, list_locations) => {
+      if (err) { return next(err); }
+      // Successful, so render.
+      res.render('location_list', { title: 'Location List', location_list: list_locations })
+    });
 };
 
 // Display single location
-exports.location_detail = (req, res) => {
-  res.send('Not implemented yet, location_detail');
+exports.location_detail = (req, res, next) => {
+  async.parallel({
+    location: function(callback) {
+      Location.findById(req.params.id).exec(callback) 
+    },
+    grocery_list: function(callback) {
+      Grocery.find({ 'location': req.params.id }).exec(callback)
+    },
+  }, function(err, results) {
+      if (err) { return next(err); }
+      if (results.location==null) {
+        var err = new Error('Location not found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('location_detail', { title: 'Location Detail', location: results.location, grocery_list: results.grocery_list })
+  });
 };
 
 // Update a location
