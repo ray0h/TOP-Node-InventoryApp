@@ -79,3 +79,5 @@ router.get('/grocery/:id/delete', grocery_controller.grocery_delete_get);
 
 // POST request for deleting a grocery
 router.post('/grocery/:id/delete', grocery_controller.grocery_delete_post);
+
+module.exports = router;

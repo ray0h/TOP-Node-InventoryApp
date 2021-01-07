@@ -13,6 +13,6 @@ const GrocerySchema = new Schema(
 );
 
 // Virtual for grocery's URL
-GrocerySchema.virtual('url').get(() => '/grocery/' + this._id);
+GrocerySchema.virtual('url').get(function() { return '/inventory/grocery/' + this._id });
 
 module.exports = mongoose.model('Grocery', GrocerySchema);

@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 const async = require('async');
 
 // Create a category
-exports.category_create_get = (req, res) => {
+exports.category_create_get = (req, res, next) => {
   res.send('Not implemented yet, category_create_get');
 };
 
@@ -14,7 +14,13 @@ exports.category_create_post = (req, res) => {
 
 // Display list of all categories
 exports.category_list = (req, res) => { 
-  res.send('Not implemented yet, category_list');
+  Category.find()
+    .sort([['name', 'ascending']])
+    .exec((err, list_categories) => {
+      if (err) { return next(err); };
+      // Successful, so render.
+      res.render('category_list', { title: 'Category List', category_list: list_categories });
+    });
 };
 
 // Display single category

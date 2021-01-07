@@ -7,6 +7,6 @@ const LocationSchema = new Schema(
 );
 
 // Virtual for category's URL
-LocationSchema.virtual('url').get(() => '/location/' + this._id);
+LocationSchema.virtual('url').get(function() { return '/inventory/location/' + this._id });
 
 module.exports = mongoose.model('Location', LocationSchema);
