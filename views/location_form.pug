@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h2 #{title}
+
+  form(method='POST' action='')
+    div
+      label(for='name') Location:
+      br
+      input#name(type='text', placeholder='e.g. Produce, Meats, Aisle11, etc.', name='name')
+      br
+      button(type='submit') Submit
+
+    if errors
+      ul
+        for error in errors
+          li!=error.msg

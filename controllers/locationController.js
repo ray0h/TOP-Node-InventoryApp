@@ -6,12 +6,34 @@ const async = require('async');
 
 // Create a location
 exports.location_create_get = (req, res) => {
-  res.send('Not implemented yet, location_create_get');
+  res.render('location_form', { title: 'Create a new Location' });
 };
 
-exports.location_create_post = (req, res) => {
-  res.send('Not implemented yet, location_create_post');
-};
+exports.location_create_post = [
+  // Validate and sanitize category fields (nake, description)
+  body('name', 'Category name required').trim().isLength({ min: 1 }).escape(),
+
+  // Process request after validation/sanitization
+  (req, res, next) => {
+    // Extract validation errors from request
+    const errors = validationResult(req);
+
+    let location = new Location({ name: req.body.name });
+
+    if (!errors.isEmpty()) {
+      // Rerender form due to errors.
+      res.render('location_form', { title: 'Create a New Location' });
+      return;
+    } else {
+      // Form data is valid.  Save new category.
+      location.save(function(err) {
+        if (err) { return next(err); }
+        // else successful - redirect to new category
+        res.redirect(location.url);
+      });
+    }
+  }
+];
 
 // Display list of all locations
 exports.location_list = (req, res) => { 
