@@ -5,13 +5,40 @@ const { body, validationResult } = require('express-validator');
 const async = require('async');
 
 // Create a category
-exports.category_create_get = (req, res, next) => {
-  res.send('Not implemented yet, category_create_get');
+exports.category_create_get = (req, res) => {
+  res.render('category_form', { title: 'Create a New Category'});
 };
 
-exports.category_create_post = (req, res) => {
-  res.send('Not implemented yet, category_create_post');
-};
+exports.category_create_post = [
+  // Validate and sanitize category fields (nake, description)
+  body('name', 'Category name required').trim().isLength({ min: 1 }).escape(),
+  body('description', 'Description required').trim().isLength({ min: 1 }).escape(),
+
+  // Process request after validation/sanitization
+  (req, res, next) => {
+    // Extract validation errors from request
+    const errors = validationResult(req);
+
+    let category = new Category(
+      {
+        name: req.body.name,
+        description: req.body.description
+      }
+    );
+    if (!errors.isEmpty()) {
+      // Rerender form due to errors.
+      res.render('category_form', { title: 'Create a New Category' });
+      return;
+    } else {
+      // Form data is valid.  Save new category.
+      category.save(function(err) {
+        if (err) { return next(err); }
+        // else successful - redirect to new category
+        res.redirect(category.url);
+      });
+    }
+  }
+];
 
 // Display list of all categories
 exports.category_list = (req, res) => { 
