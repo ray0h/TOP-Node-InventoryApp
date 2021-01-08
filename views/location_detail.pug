@@ -13,3 +13,10 @@ block content
           a(href=grocery.url) #{grocery.name}
       else
         li This location currently has no items
+
+  p 
+    a(href=location.url + '/delete') Delete Location
+
+  p
+    a(href=location.url + '/update') Update Location
+

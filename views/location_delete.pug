@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h2 #{title} : #{location.name}
+
+  if location_groceries.length
+    div
+      p Location currently storing items.  Delete the following groceries before deleting location.
+      ul
+        each grocery in location_groceries
+          li
+            a(href=grocery.url) #{grocery.name}
+  else
+    p Do you really want to delete this location?
+
+    form(method='POST', action='')
+      div
+        input(type='hidden', name='locationid', require='true', value=location._id)
+      button(type='submit') Delete
