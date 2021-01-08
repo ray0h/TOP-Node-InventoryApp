@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h2= title
+    
+  ul
+    each grocery in grocery_list
+      li
+        a(href=grocery.url) #{grocery.name}
+    else
+      li There are no groceries.

@@ -15,4 +15,6 @@ const GrocerySchema = new Schema(
 // Virtual for grocery's URL
 GrocerySchema.virtual('url').get(function() { return '/inventory/grocery/' + this._id });
 
+// Virtual for grocery's price
+GrocerySchema.virtual('price_format').get(function() { return '$' + this.price });
 module.exports = mongoose.model('Grocery', GrocerySchema);

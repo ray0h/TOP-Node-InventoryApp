@@ -5,6 +5,9 @@ const location_controller = require('../controllers/locationController');
 const category_controller = require('../controllers/categoryController');
 const grocery_controller = require('../controllers/groceryController');
 
+// Main Index Route //
+router.get('/', grocery_controller.index);
+
 // Location Routes //
 // GET request for creating a location
 router.get('/location/create', location_controller.location_create_get);

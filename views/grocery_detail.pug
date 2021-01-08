@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h2 Grocery: #{grocery.name}
+
+  p #[strong Description: ] #{grocery.description}
+  p #[strong Price: ] #{grocery.price_format}
+  p #[strong Current Inventory: ] #{grocery.inventory}
+  if grocery.plu != ''
+    p #[strong Produce PLU: ] #{grocery.plu}
+
+  div #[strong Category: ] 
+    a(href=grocery.category.url) #{grocery.category.name}
+  div #[strong Location: ] 
+    a(href=grocery.location.url) #{grocery.location.name}
