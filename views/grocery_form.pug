@@ -7,40 +7,49 @@ block content
     div
       label(for='name') Grocery:
       br
-      input#name(type='text', placeholder='Grocery Name', name='name')
+      input#name(type='text', placeholder='Grocery Name', name='name', value= grocery ? grocery.name : '')
     div
       label(for='description') Description:
       br
-      textarea#description(type='textarea', placeholder='Grocery Description', name='description')
+      textarea#description(type='textarea', placeholder='Grocery Description', name='description') #{grocery ?  grocery.description : ''}
     div
       label(for='price') Price: (USD)
       br
-      input#price(type='number', placeholder=0.99, step='.01', name='price')
+      input#price(type='number', placeholder=0.99, step='.01', name='price', value= grocery ? grocery.price : 0.01)
     div
       label(for='inventory') Inventory:
       br
-      input#inventory(type='number', placeholder=0, name='inventory')
+      input#inventory(type='number', placeholder=0, name='inventory', value= grocery ? grocery.inventory : '')
     div
       label(for='plu') PLU: 
       br
-      input#plu(type='string', placeholder='for produce only', name='plu')
+      input#plu(type='text', placeholder='for produce only', name='plu', value= grocery ? grocery.plu : '')
     div
       label(for='category') Category:
       br
       select(type='select', placeholder='Select category' name='category', required='true')
         - categories.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; });
         for category in categories
-          option(value=category._id) #{category.name}
+          if grocery
+            option(value=category._id, selected= grocery.category.name===category.name ? 'selected' : false) #{category.name}
+          else
+            option(value=category._id) #{category.name}
 
     div
       label(for='location') Location:
       br
       select(type='select', placeholder='Select location' name='location', required='true')   
         - locations.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; });
+        option(value='', disabled selected) Select location
         for location in locations
-          option(value=location._id) #{location.name}
+          if grocery
+            option(value=location._id, selected= grocery.location.name===location.name? 'selected' : false) #{location.name}
+          else
+            option(value=location._id) #{location.name}
 
     div 
+      button 
+        a(href= grocery ? grocery.url : '/inventory/groceries') Back
       button(type='submit') Submit
 
     if errors

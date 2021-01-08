@@ -1,10 +1,7 @@
 extends layout
 
 block content
-  a(href='/inventory/grocery/create') Create a new Grocery
-
-  h2 Grocery: #{grocery.name}
-
+  h2 #{title}: #{grocery.name}
   p #[strong Description: ] #{grocery.description}
   p #[strong Price: ] #{grocery.price_format}
   p #[strong Current Inventory: ] #{grocery.inventory}
@@ -16,8 +13,13 @@ block content
   div #[strong Location: ] 
     a(href=grocery.location.url) #{grocery.location.name}
 
-  p
-    button
-      a(href=grocery.url + '/delete') Delete Grocery
-    button
-      a(href=grocery.url + '/update') Update Grocery
+  p #[strong Do you really want to delete this grocery?]
+
+    form(method='POST', action='')
+      div
+        input(type='hidden', name='groceryid', require='true', value=grocery._id)
+      
+      button  
+        a(href=grocery.url) Cancel
+      button(type='submit') Delete
+

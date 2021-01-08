@@ -4,7 +4,7 @@ const GrocerySchema = new Schema(
   {
     name: { type: String, required: true, maxlength: 100 },
     description: { type: String, required: true },
-    price: { type: mongoose.Decimal128, required: true },
+    price: { type: Number, required: true },
     inventory: { type: Number, default: 0, required: true },
     plu: String,
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },

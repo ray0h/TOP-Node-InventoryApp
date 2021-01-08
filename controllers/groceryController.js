@@ -95,19 +95,82 @@ exports.grocery_detail = (req, res) => {
 };
 
 // Update a grocery
-exports.grocery_update_get = (req, res) => {
-  res.send('Not implemented yet, grocery_update_get');
+exports.grocery_update_get = (req, res, next) => {
+  async.parallel({
+    grocery: function(callback) { Grocery.findById(req.params.id).populate('category').populate('location').exec(callback) },
+    categories: function(callback) { Category.find(callback) },
+    locations: function(callback) { Location.find(callback) },
+  }, function(err, results) {
+    if (err) { return next(err); }
+    console.log(results.grocery)
+    res.render('grocery_form', { title: 'Update Grocery', grocery: results.grocery, categories: results.categories, locations: results.locations });
+  });
 };
 
-exports.grocery_update_post = (req, res) => {
-  res.send('Not implemented yet, grocery_update_post');
-};
+exports.grocery_update_post = [
+  // Validate and sanitize fields
+  body('name', 'Name must not be empty.').trim().isLength({ min: 1 }).escape(),
+  body('description', 'Description must not be empty.').trim().isLength({ min: 1 }).escape(),
+  body('price', 'Price must not be empty.').escape(),
+  body('inventory', 'Inventory must not be empty.').escape(),
+  body('category', 'Category must not be empty.').trim().isLength({ min: 1 }).escape(),
+  body('location', 'Location must not be empty.').trim().isLength({ min: 1 }).escape(),
+  // plu is optional
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a new Grocery object with escaped and trimmed data.
+    let grocery = new Grocery(
+      {
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        inventory: req.body.inventory,
+        category: req.body.category,
+        location: req.body.location,
+        plu: req.body.plu,
+        _id: req.params.id
+      }
+    );
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      async.parallel({
+        grocery: function(callback) { Grocery.findById(req.params.id).populate('category').populate('location').exec(callback) },
+        categories: function(callback) { Category.find(callback) },
+        locations: function(callback) { Location.find(callback) },
+      }, function(err, results) {
+        if (err) { return next(err); }
+
+        res.render('grocery_form', { title: 'Update Grocery', grocery: results.grocery, categories: results.categories, locations: results.locations, errors: errors.array() });
+      });
+      return;
+    } else {
+      // Data from form is valid.  Update grocery
+      Grocery.findByIdAndUpdate(req.params.id, grocery, {}, function(err, thisgrocery) {
+        if (err) { return next(err); }
+        // successful - redirect to new grocery
+        res.redirect(thisgrocery.url);
+      });
+    }
+  }
+];
 
 // Delete a grocery
-exports.grocery_delete_get = (req, res) => {
-  res.send('Not implemented yet, grocery_delete_get');
+exports.grocery_delete_get = (req, res, next) => {
+  Grocery.findById(req.params.id).populate('category').populate('location').exec(function(err, grocery) {
+    if (err) { return next(err); }
+    res.render('grocery_delete', {title: 'Delete Grocery', grocery: grocery });
+  });
 };
 
 exports.grocery_delete_post = (req, res) => {
-  res.send('Not implemented yet, grocery_delete_post');
+  // Logic for ensuring occupied groceries handled via Conditional View
+  Grocery.findByIdAndDelete(req.params.id, function deletegrocery(err) {
+    if (err) { return next(err); }
+    res.redirect('/inventory/groceries')
+  });
 };
