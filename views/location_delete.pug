@@ -16,4 +16,7 @@ block content
     form(method='POST', action='')
       div
         input(type='hidden', name='locationid', require='true', value=location._id)
+      
+      button  
+        a(href=location.url) Cancel
       button(type='submit') Delete

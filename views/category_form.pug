@@ -7,12 +7,14 @@ block content
     div
       label(for='name') Category:
       br
-      input#name(type='text', placeholder='e.g. Produce, Meats, Dairy, etc.', name='name')
+      input#name(type='text', placeholder='e.g. Produce, Meats, Dairy, etc.', name='name', value= category ? category.name : '')
       br
       label(for='description') Description:
       br
-      input#description(type='textarea', name='description')
+      input#description(type='textarea', name='description', value= category ? category.description : '')
       br
+      button
+        a(href= title==='Update Category' ? category.url : '/inventory/categories') Cancel
       button(type='submit') Submit
 
     if errors

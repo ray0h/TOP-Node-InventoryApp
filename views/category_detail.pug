@@ -3,7 +3,7 @@ extends layout
 block content
   a(href='/inventory/category/create') Create a New Category
 
-  h2 Category: #{category.name}
+  h2 Category: #{category.name} 
 
   p #{category.description}
   
@@ -15,3 +15,9 @@ block content
           a(href=grocery.url) #{grocery.name}
       else
         li This category currently has no items
+
+  p
+    button
+      a(href=category.url+'/delete') Delete Category
+    button
+      a(href=category.url+'/update') Update Category

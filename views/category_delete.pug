@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h2 #{title} : #{category.name}
+  p #{category.description}
+
+  if category_groceries.length
+    div
+      p Category contains current grocery inventory.  Delete the following groceries before deleting category.
+      ul
+        each grocery in category_groceries
+          li
+            a(href=grocery.url) #{grocery.name}
+  else
+    p Do you really want to delete this category?
+
+    form(method='POST', action='')
+      div
+        input(type='hidden', name='categoryid', require='true', value=category._id)
+      button
+        a(href=category.url) Cancel
+      button(type='submit') Delete
