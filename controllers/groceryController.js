@@ -131,7 +131,7 @@ exports.grocery_update_post = [
   body('inventory', 'Inventory must not be empty.').escape(),
   body('category', 'Category must not be empty.').trim().isLength({ min: 1 }).escape(),
   body('location', 'Location must not be empty.').trim().isLength({ min: 1 }).escape(),
-  // plu is optional
+  // imagelink, imagefile, plu are optional
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -181,6 +181,7 @@ exports.grocery_update_post = [
       return;
     } else {
       // Data from form is valid.  Update grocery
+      let img = null
       if (image) {
         // see if grocery has an image already
         async.parallel({
@@ -189,18 +190,18 @@ exports.grocery_update_post = [
           }
         }, function(err, results) {
           if (err) { return next(err); }
-          // console.log('result', results.img)
-          // console.log('image', image)
           if (results.img.length != 0) {
             // update image
             Image.findByIdAndUpdate(results.img.id, results.image, {}, function (err) {
               if (err) { return next(err); }
             }); 
+            img = results.img
           } else {
             // save new image
             image.save(function(err) {
               if (err) { return next(err); }
             });
+            img = image
           }
         });
       }
