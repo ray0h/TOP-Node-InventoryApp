@@ -3,7 +3,7 @@ extends layout
 block content
   h2 #{title}
 
-  form(method='POST' action='')
+  form(method='POST' action='', enctype='multipart/form-data')
     div
       label(for='name') Grocery:
       br
@@ -12,6 +12,12 @@ block content
       label(for='description') Description:
       br
       textarea#description(type='textarea', placeholder='Grocery Description', name='description') #{grocery ?  grocery.description : ''}
+    div
+      label(for='image') Image (enter image url or attach image file):
+      br
+      input#imagelink(type='text', name='imagelink', value= grocery ? grocery.imagelink : '')
+      br
+      input#imagefile(type='file', name='image', value= grocery ? grocery.imagefile : '')
     div
       label(for='price') Price: (USD)
       br

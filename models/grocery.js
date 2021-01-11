@@ -8,7 +8,9 @@ const GrocerySchema = new Schema(
     inventory: { type: Number, default: 0, required: true },
     plu: String,
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
-    location: { type: Schema.Types.ObjectId, ref: 'Location', required: true }
+    location: { type: Schema.Types.ObjectId, ref: 'Location', required: true },
+    imagefile: { type: String }, 
+    imagelink: { type: String }
   }
 );
 

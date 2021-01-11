@@ -1,5 +1,28 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (_req, file, cb) => {
+    cb(null, 'public/images');
+  },
+  filename: (_req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({
+  storage: storage,
+  fileFilter: (_req, file, cb) => {
+    var ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+      return cb(new Error('Only images are allowed!'));
+    }
+    // else valid ext name.
+    cb(null, true)
+  },
+  limits: { fileSize: 1000000 },
+});
 
 const location_controller = require('../controllers/locationController');
 const category_controller = require('../controllers/categoryController');
@@ -63,7 +86,7 @@ router.post('/category/:id/delete', category_controller.category_delete_post);
 router.get('/grocery/create', grocery_controller.grocery_create_get);
 
 // POST request for creating a grocery
-router.post('/grocery/create', grocery_controller.grocery_create_post);
+router.post('/grocery/create', upload.single('image'), grocery_controller.grocery_create_post);
 
 // GET request for list of all groceries
 router.get('/groceries', grocery_controller.grocery_list);
@@ -75,7 +98,7 @@ router.get('/grocery/:id', grocery_controller.grocery_detail);
 router.get('/grocery/:id/update', grocery_controller.grocery_update_get);
 
 // POST request for updating a grocery
-router.post('/grocery/:id/update', grocery_controller.grocery_update_post);
+router.post('/grocery/:id/update', upload.single('image'), grocery_controller.grocery_update_post);
 
 // GET request for deleting a grocery
 router.get('/grocery/:id/delete', grocery_controller.grocery_delete_get);

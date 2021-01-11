@@ -4,8 +4,12 @@ block content
   a(href='/inventory/grocery/create') Create a new Grocery
 
   h2 Grocery: #{grocery.name}
-
+  
+  if grocery_image.length !== 0
+    img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'))
+  
   p #[strong Description: ] #{grocery.description}
+
   p #[strong Price: ] #{grocery.price_format}
   p #[strong Current Inventory: ] #{grocery.inventory}
   if grocery.plu != ''
