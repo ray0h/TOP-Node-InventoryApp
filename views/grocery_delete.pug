@@ -2,6 +2,13 @@ extends layout
 
 block content
   h2 #{title}: #{grocery.name}
+
+  if grocery_image && grocery_image.length !== 0
+    img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'), alt=grocery.name + ' image2', width= 150, length=200)
+  else if grocery.imagelink && grocery.imagelink !== ''
+    img(src=grocery.imagelink, alt=grocery.name + ' image1', width=200, length=300)
+  else
+    img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png', alt='no image available', width=100, length=100)
   p #[strong Description: ] #{grocery.description}
   p #[strong Price: ] #{grocery.price_format}
   p #[strong Current Inventory: ] #{grocery.inventory}

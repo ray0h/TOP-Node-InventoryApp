@@ -31,7 +31,7 @@ exports.grocery_create_post = [
   body('inventory', 'Inventory must not be empty.').escape(),
   body('category', 'Category must not be empty.').trim().isLength({ min: 1 }).escape(),
   body('location', 'Location must not be empty.').trim().isLength({ min: 1 }).escape(),
-  // plu, imagelink, imagefile are optional
+  // plu, imagelink are optional
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -54,7 +54,6 @@ exports.grocery_create_post = [
     let image = false;
     if (req.file) {
       console.log('FILE', req.file);
-      grocery.imagefile = req.file.filename;
       image = new Image(
         {
           data: fs.readFileSync(path.join(__dirname, '../', '/public/images/' + req.file.filename)),
@@ -62,6 +61,10 @@ exports.grocery_create_post = [
           grocery: grocery.id
         }
       );
+      fs.unlink('public/images/' + req.file.filename, (err) => {
+        if (err) return next(err);
+        console.log(req.file.filename + ' deleted');
+      });
     } 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
@@ -105,7 +108,6 @@ exports.grocery_detail = (req, res) => {
     grocery_image: function(callback) { Image.find({ 'grocery': req.params.id }).exec(callback) },
   }, function (err, results) {
     if (err) { return next(err); }
-    console.log(results)
     res.render('grocery_detail', { title: 'Grocery Detail', grocery: results.grocery, grocery_image: results.grocery_image });
   })
 };
@@ -131,7 +133,7 @@ exports.grocery_update_post = [
   body('inventory', 'Inventory must not be empty.').escape(),
   body('category', 'Category must not be empty.').trim().isLength({ min: 1 }).escape(),
   body('location', 'Location must not be empty.').trim().isLength({ min: 1 }).escape(),
-  // imagelink, imagefile, plu are optional
+  // imagelink, plu are optional
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -156,14 +158,37 @@ exports.grocery_update_post = [
     let image = false;
     if (req.file) {
       console.log('FILE', req.file);
-      grocery.imagefile = req.file.filename;
-      image = new Image(
-        {
-          data: fs.readFileSync(path.join(__dirname, '../', '/public/images/' + req.file.filename)),
-          contentType: req.file.mimetype,
-          grocery: grocery.id
+      async.series({
+        img: function (cb) { Image.find({ 'grocery': req.params.id }).exec(cb) }
+      }, function(err, results) {
+        if (err) { return next(err); }
+        console.log('already', results.img)
+        if ( results.img.length == 0) {
+          // create a new image
+          image = new Image({
+            data: fs.readFileSync(path.join(__dirname, '../', '/public/images/' + req.file.filename)),
+            contentType: req.file.mimetype,
+            grocery: grocery.id,
+          });
+          image.save(function(err) { if (err) return next(err); })
+        } else {
+          // update image
+          image = new Image({
+            data: fs.readFileSync(path.join(__dirname, '../', '/public/images/' + req.file.filename)),
+            contentType: req.file.mimetype,
+            grocery: grocery.id,
+            _id: results.img[0].id
+          });
+          Image.findByIdAndUpdate(results.img[0].id, image, {}, function (err) {
+            if (err) { return next(err); }
+            console.log('updated image')
+          }); 
         }
-      );
+      });
+      fs.unlink('/public/images/' + req.file.filename, (err) => {
+        if (err) return next(err);
+        console.log(req.file.filename + ' deleted');
+      });
     } 
 
     if (!errors.isEmpty()) {
@@ -181,34 +206,11 @@ exports.grocery_update_post = [
       return;
     } else {
       // Data from form is valid.  Update grocery
-      let img = null
-      if (image) {
-        // see if grocery has an image already
-        async.parallel({
-          img: function(callback) { 
-            Image.find({ 'grocery': req.params.id }).exec(callback) 
-          }
-        }, function(err, results) {
-          if (err) { return next(err); }
-          if (results.img.length != 0) {
-            // update image
-            Image.findByIdAndUpdate(results.img.id, results.image, {}, function (err) {
-              if (err) { return next(err); }
-            }); 
-            img = results.img
-          } else {
-            // save new image
-            image.save(function(err) {
-              if (err) { return next(err); }
-            });
-            img = image
-          }
-        });
-      }
       Grocery.findByIdAndUpdate(req.params.id, grocery, {}, function(err, thisgrocery) {
         if (err) { return next(err); }
-        // successful - redirect to new grocery
-        res.render('grocery_detail', { title: 'Grocery Detail', grocery: thisgrocery, grocery_image: img });
+        // successful - redirect to new grocery 
+        res.redirect(thisgrocery.url);
+        // res.render('grocery_detail', { title: 'Grocery Detail', grocery: thisgrocery, grocery_image: img });
       });
     }
   }
@@ -216,14 +218,29 @@ exports.grocery_update_post = [
 
 // Delete a grocery
 exports.grocery_delete_get = (req, res, next) => {
-  Grocery.findById(req.params.id).populate('category').populate('location').exec(function(err, grocery) {
+  async.parallel({
+    grocery_image: function(callback) { Image.find({ 'grocery': req.params.id }).exec(callback) },
+    grocery: function(callback) {
+      Grocery.findById(req.params.id).populate('category').populate('location').exec(callback) 
+    }
+  }, function(err, results) {
     if (err) { return next(err); }
-    res.render('grocery_delete', {title: 'Delete Grocery', grocery: grocery });
+    res.render('grocery_delete', {title: 'Delete Grocery', grocery: results.grocery, grocery_image: results.grocery_image });
   });
 };
 
-exports.grocery_delete_post = (req, res) => {
+exports.grocery_delete_post = (req, res, next) => {
   // Logic for ensuring occupied groceries handled via Conditional View
+  // Delete any attached images from db
+  Image.find({'grocery': req.params.id}, function(err, grocery_image) {
+    if (err) return next(err);
+    console.log('grocery image', grocery_image[0].id)
+    if (grocery_image) {
+      Image.findByIdAndDelete(grocery_image[0].id).exec(function(err) {
+        if (err) return next(err);
+      })
+    }
+  }).exec();
   Grocery.findByIdAndDelete(req.params.id, function deletegrocery(err) {
     if (err) { return next(err); }
     res.redirect('/inventory/groceries')

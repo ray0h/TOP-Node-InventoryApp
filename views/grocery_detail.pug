@@ -7,7 +7,7 @@ block content
 
   h2 #{grocery.name}
   
-  if grocery_image.length !== 0
+  if grocery_image && grocery_image.length !== 0
     img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'), alt=grocery.name + ' image2', width= 150, length=200)
   else if grocery.imagelink && grocery.imagelink !== ''
     img(src=grocery.imagelink, alt=grocery.name + ' image1', width=200, length=300)
