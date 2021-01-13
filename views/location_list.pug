@@ -1,12 +1,13 @@
 extends layout
 
 block content
-  a(href='/inventory/location/create') Create a New Location
-  h2= title
+  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+    a(href='/inventory/location/create') Create a New Location
+  h2.text-2xl.mb-2= title
 
-  ul
+  ul.px-4
     each location in location_list
-      li
-        a(href=location.url) #{location.name}
+      li.list-disc
+        a(href=location.url, class='hover:text-blue-400 hover:underline') #{location.name}
     else
-      li There are no locations.
+      li.list-disc There are no locations.

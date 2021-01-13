@@ -1,13 +1,14 @@
 extends layout
 
 block content
-  a(href='/inventory/grocery/create') Create a new Grocery
+  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+    a(href='/inventory/grocery/create') Create a new Grocery
 
-  h2= title
+  h2.text-2xl.mb-2= title
     
-  ul
+  ul.ml-4
     each grocery in grocery_list
-      li
-        a(href=grocery.url) #{grocery.name}
+      li.list-disc
+        a(href=grocery.url, class='hover:text-blue-400 hover:underline') #{grocery.name}
     else
-      li There are no groceries.
+      li.list-disc There are no groceries.

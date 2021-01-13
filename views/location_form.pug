@@ -1,19 +1,19 @@
 extends layout
 
 block content
-  h2 #{title}
+  h2.text-2xl.mb-2 #{title}
 
   form(method='POST' action='')
-    div
-      label(for='name') Location:
+    div.mb-1
+      label(for='name') #[strong Location:]
       br
-      input#name(type='text', placeholder='e.g. Produce, Meats, Aisle11, etc.', name='name', value= location ? location.name : '')
+      input#name.bg-gray-500(type='text', placeholder='e.g. Produce, Meats, Aisle11, etc.', name='name', value= location ? location.name : '')
       br
-      button
-        a(href= title==='Update Location' ? location.url : '/inventory/locations') Back
-      button(type='submit') Submit
+      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+        a(href= title==='Update Location' ? location.url : '/inventory/locations') Cancel
+      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Submit
 
     if errors
-      ul
+      ul.ml-4
         for error in errors
-          li!=error.msg
+          li.list-disc!=error.msg

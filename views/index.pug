@@ -1,6 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to the App
-  div
+  h1.text-2xl.underline.mb-2= title
+  p.font-bold.text-xl Welcome to the App!
+    div
+      ul.text-xl
+        li 
+          a(href='/inventory/groceries', class='hover:text-blue-400 hover:underline') Groceries 
+        li 
+          a(href='/inventory/categories', class='hover:text-blue-400 hover:underline') Categories
+        li 
+          a(href='/inventory/locations', class='hover:text-blue-400 hover:underline') Locations 

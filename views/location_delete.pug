@@ -1,22 +1,24 @@
 extends layout
 
 block content
-  h2 #{title} : #{location.name}
+  h2.text-2xl.underline.mb-2 #{title} : #{location.name}
 
   if location_groceries.length
     div
-      p Location currently storing items.  Delete the following groceries before deleting location.
-      ul
+      p.my-2 Location currently storing items.  Delete the following groceries before deleting location.
+      ul.ml-4
         each grocery in location_groceries
-          li
-            a(href=grocery.url) #{grocery.name}
+          li.list-disc
+            a(href=grocery.url, class='hover:text-blue-400 hover:underline') #{grocery.name}
+    button.my-2.mr-2.bg-gray-400.p-1.text-white.rounded
+      a(href=location.url) Back
   else
-    p Do you really want to delete this location?
+    p.text-xl.font-bold.text-red-500 Do you really want to delete this location?
 
     form(method='POST', action='')
       div
         input(type='hidden', name='locationid', require='true', value=location._id)
       
-      button  
+      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100') 
         a(href=location.url) Cancel
-      button(type='submit') Delete
+      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Delete

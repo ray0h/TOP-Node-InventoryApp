@@ -1,22 +1,27 @@
 extends layout
 
 block content
-  a(href='/inventory/location/create') Create a New Location
+  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+    a(href='/inventory/location/create') Create a New Location
   
-  h2 Location: #{location.name}
+  div.mb-4
+    span.text-2xl.mb-2 Location: #{location.name}
+    button.text-xl.ml-4.p-1.rounded(class='hover:bg-blue-100 hover:text-gray-400')
+      a(href=location.url + '/update')
+        i.fa.fa-edit
+    button.text-xl.p-1.rounded(class='hover:bg-blue-100 hover:text-gray-400')
+      a(href=location.url + '/delete')
+        i.fa.fa-trash
   
   div
-    h4 Available Items in Location
-    ul
+    h4.text-lg Available Items in Location:
+    ul.ml-4
       each grocery in grocery_list
-        li 
-          a(href=grocery.url) #{grocery.name}
+        li.list-disc 
+          a(href=grocery.url, class='hover:text-blue-400 hover:underline') #{grocery.name}
       else
-        li This location currently has no items
+        li.list-disc This location currently has no items
 
-  p 
-    a(href=location.url + '/delete') Delete Location
-
-  p
-    a(href=location.url + '/update') Update Location
-
+  
+  button.mt-2.mr-2.bg-gray-400.p-1.text-black.rounded(class='hover:bg-gray-500 hover:text-white')
+    a(href= title==='Update Location' ? location.url : '/inventory/locations') Back

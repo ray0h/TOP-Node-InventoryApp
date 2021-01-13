@@ -87,7 +87,7 @@ exports.grocery_create_post = [
 ];
 
 // Display list of all groceries
-exports.grocery_list = (_req, res) => { 
+exports.grocery_list = (_req, res, next) => { 
   Grocery.find()
     .sort([['name', 'ascending']])
     .exec((err, list_groceries) => {

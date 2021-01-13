@@ -1,12 +1,13 @@
 extends layout
 
 block content
-  a(href='/inventory/category/create') Create a New Category
-  h2= title
+  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+    a(href='/inventory/category/create') Create a New Category
+  h2.text-2xl.mb-2= title
   
-  ul
+  ul.px-4
     each category in category_list
-      li
-        a(href=category.url) #{category.name}
+      li.list-disc
+        a(href=category.url, class='hover:text-blue-400 hover:underline') #{category.name}
     else
-      li There are no categories.
+      li.list-disc There are no categories.

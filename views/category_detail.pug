@@ -1,23 +1,27 @@
 extends layout
 
 block content
-  a(href='/inventory/category/create') Create a New Category
+  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+    a(href='/inventory/category/create') Create a New Category
 
-  h2 Category: #{category.name} 
-
-  p #{category.description}
+  div
+    span.text-2xl.mb-2 Category: #{category.name}
+    button.text-xl.ml-4.p-1.rounded(class='hover:bg-blue-100 hover:text-gray-400')
+      a(href=category.url+'/update') 
+        i.fa.fa-edit
+    button.text-xl.p-1.rounded(class='hover:bg-blue-100 hover:text-gray-400')
+      a(href=category.url+'/delete')
+        i.fa.fa-trash
+  p.mb-4 #[strong #[em Description: ]] #{category.description}
   
   div
-    h4 Available Items
-    ul
+    h4.text-lg Available Items:
+    ul.px-4
       each grocery in grocery_list
-        li 
-          a(href=grocery.url) #{grocery.name}
+        li.list-disc
+          a(href=grocery.url, class='hover:text-blue-400 hover:underline') #{grocery.name}
       else
         li This category currently has no items
 
-  p
-    button
-      a(href=category.url+'/delete') Delete Category
-    button
-      a(href=category.url+'/update') Update Category
+  button.mt-2.mr-2.bg-gray-400.p-1.text-black.rounded(class='hover:bg-gray-500 hover:text-white')
+    a(href= title==='Update Category' ? category.url : '/inventory/categories') Back

@@ -1,32 +1,37 @@
 extends layout
 
 block content
-  a(href='/inventory/grocery/create') Create a new Grocery
-  //- br
-  //- img(src='https://upload.wikimedia.org/wikipedia/commons/3/31/Made20bacon.png', width=200, length=300)
-
-  h2 #{grocery.name}
+  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+    a(href='/inventory/grocery/create') Create a new Grocery
   
-  if grocery_image && grocery_image.length !== 0
-    img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'), alt=grocery.name + ' image2', width= 150, length=200)
-  else if grocery.imagelink && grocery.imagelink !== ''
-    img(src=grocery.imagelink, alt=grocery.name + ' image1', width=200, length=300)
-  else
-    img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png', alt='no image available', width=100, length=100)
-  p #[strong Description: ] #{grocery.description}
+  div
+    span.text-2xl #{grocery.name}
+    button.text-xl.ml-4.p-1.rounded(class='hover:bg-blue-100 hover:text-gray-400')
+      a(href=grocery.url + '/update') 
+        i.fa.fa-edit
+    button.text-xl.p-1.rounded(class='hover:bg-blue-100 hover:text-gray-400')
+      a(href=grocery.url + '/delete')
+        i.fa.fa-trash
 
-  p #[strong Price: ] #{grocery.price_format}
-  p #[strong Current Inventory: ] #{grocery.inventory}
-  if grocery.plu != ''
-    p #[strong Produce PLU: ] #{grocery.plu}
+  div.my-1
+    if grocery_image && grocery_image.length !== 0
+      img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'), alt=grocery.name + ' image2', width= 150, length=200)
+    else if grocery.imagelink && grocery.imagelink !== ''
+      img(src=grocery.imagelink, alt=grocery.name + ' image1', width=200, length=300)
+    else
+      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png', alt='no image available', width=100, length=100)
+  
+  div
+    p #[strong #[em Description:] ] #{grocery.description}
+    p #[strong #[em Price: ]] #{grocery.price_format}
+    p #[strong #[em Current Inventory: ]] #{grocery.inventory}
+    if grocery.plu != ''
+      p #[strong #[em Produce PLU: ]] #{grocery.plu}
+    p #[strong #[em Category: ]] 
+      a(href=grocery.category.url, class='hover:text-blue-400 hover:underline') #{grocery.category.name}
+    p #[strong #[em Location: ]] 
+      a(href=grocery.location.url, class='hover:text-blue-400 hover:underline') #{grocery.location.name}
 
-  div #[strong Category: ] 
-    a(href=grocery.category.url) #{grocery.category.name}
-  div #[strong Location: ] 
-    a(href=grocery.location.url) #{grocery.location.name}
-
-  p
-    button
-      a(href=grocery.url + '/delete') Delete Grocery
-    button
-      a(href=grocery.url + '/update') Update Grocery
+  div
+    button.mt-2.mr-2.bg-gray-400.p-1.text-black.rounded(class='hover:bg-gray-500 hover:text-white')
+      a(href= title==='Update Location' ? grocery.url : '/inventory/groceries') Back

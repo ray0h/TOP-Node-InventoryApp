@@ -3,11 +3,19 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+
   body
-    div
-      a(href='/') Home 
-      a(href='/inventory/groceries') Groceries 
-      a(href='/inventory/categories') Categories 
-      a(href='/inventory/locations') Locations 
-    hr
-    block content
+    div.flex.justify-between.bg-gray-400.text-black.px-4.py-2.text-lg
+      div
+        a(href='/', class='hover:text-gray-700 hover:underline') Home
+      div
+        a(href='/inventory/groceries', class='hover:text-gray-700 hover:underline') Groceries 
+        span | 
+        a(href='/inventory/categories', class='hover:text-gray-700 hover:underline') Categories 
+        span | 
+        a(href='/inventory/locations', class='hover:text-gray-700 hover:underline') Locations 
+    
+    .px-8.py-4
+      block content

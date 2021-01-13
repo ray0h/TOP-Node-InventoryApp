@@ -1,32 +1,35 @@
 extends layout
 
 block content
-  h2 #{title}: #{grocery.name}
+  h2.text-2xl.underline.mb-2 #{title}: #{grocery.name}
 
-  if grocery_image && grocery_image.length !== 0
-    img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'), alt=grocery.name + ' image2', width= 150, length=200)
-  else if grocery.imagelink && grocery.imagelink !== ''
-    img(src=grocery.imagelink, alt=grocery.name + ' image1', width=200, length=300)
-  else
-    img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png', alt='no image available', width=100, length=100)
-  p #[strong Description: ] #{grocery.description}
-  p #[strong Price: ] #{grocery.price_format}
-  p #[strong Current Inventory: ] #{grocery.inventory}
-  if grocery.plu != ''
-    p #[strong Produce PLU: ] #{grocery.plu}
+  div.my-1
+    if grocery_image && grocery_image.length !== 0
+      img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'), alt=grocery.name + ' image2', width= 150, length=200)
+    else if grocery.imagelink && grocery.imagelink !== ''
+      img(src=grocery.imagelink, alt=grocery.name + ' image1', width=200, length=300)
+    else
+      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png', alt='no image available', width=100, length=100)
+  
+  div
+    p #[strong Description: ] #{grocery.description}
+    p #[strong Price: ] #{grocery.price_format}
+    p #[strong Current Inventory: ] #{grocery.inventory}
+    if grocery.plu != ''
+      p #[strong Produce PLU: ] #{grocery.plu}
+    p #[strong Category: ] 
+      a(href=grocery.category.url, class='hover:text-blue-400 hover:underline') #{grocery.category.name}
+    p #[strong Location: ] 
+      a(href=grocery.location.url, class='hover:text-blue-400 hover:underline') #{grocery.location.name}
 
-  div #[strong Category: ] 
-    a(href=grocery.category.url) #{grocery.category.name}
-  div #[strong Location: ] 
-    a(href=grocery.location.url) #{grocery.location.name}
-
-  p #[strong Do you really want to delete this grocery?]
+  div
+    p.text-xl.font-bold.text-red-500 #[strong Do you really want to delete this grocery?]
 
     form(method='POST', action='')
       div
         input(type='hidden', name='groceryid', require='true', value=grocery._id)
       
-      button  
+      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100') 
         a(href=grocery.url) Cancel
-      button(type='submit') Delete
+      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Delete
 

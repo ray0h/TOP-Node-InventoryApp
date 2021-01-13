@@ -1,23 +1,23 @@
 extends layout
 
 block content
-  h2 #{title}
+  h2.text-2xl.mb-2 #{title}
 
   form(method='POST' action='')
-    div
-      label(for='name') Category:
+    div.mb-1
+      label(for='name') #[strong Category:]
       br
-      input#name(type='text', placeholder='e.g. Produce, Meats, Dairy, etc.', name='name', value= category ? category.name : '')
+      input#name.bg-gray-500(type='text', placeholder='e.g. Produce, Meats, Dairy, etc.', name='name', value= category ? category.name : '')
+    div.mb-1
+      label(for='description') #[strong Description:]
       br
-      label(for='description') Description:
-      br
-      input#description(type='textarea', name='description', value= category ? category.description : '')
-      br
-      button
-        a(href= title==='Update Category' ? category.url : '/inventory/categories') Cancel
-      button(type='submit') Submit
-
+      textarea#description.bg-gray-500(type='textarea', name='description') #{value= category ? category.description : ''}
+      
+    button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+      a(href= title==='Update Category' ? category.url : '/inventory/categories') Cancel
+    button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Submit
+    
     if errors
-      ul
+      ul.ml-4
         for error in errors
-          li!=error.msg
+          li.list-disc!=error.msg

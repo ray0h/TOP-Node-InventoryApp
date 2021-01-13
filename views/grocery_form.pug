@@ -1,50 +1,52 @@
 extends layout
 
 block content
-  h2 #{title}
+  h2.text-2xl.mb-2 #{title}
 
   form(method='POST' action='', enctype='multipart/form-data')
-    div
-      label(for='name') Grocery:
+    div.mb-1
+      label(for='name') #[strong Grocery:]
       br
-      input#name(type='text', placeholder='Grocery Name', name='name', value= grocery ? grocery.name : '')
-    div
-      label(for='description') Description:
+      input#name.bg-gray-500(type='text', placeholder='Grocery Name', name='name', value= grocery ? grocery.name : '')
+    div.mb-1
+      label(for='description') #[strong Description:]
       br
-      textarea#description(type='textarea', placeholder='Grocery Description', name='description') #{grocery ?  grocery.description : ''}
-    div
-      label(for='image') Image (enter image url or attach image file):
+      textarea#description.bg-gray-500(type='textarea', placeholder='Grocery Description', name='description') #{grocery ?  grocery.description : ''}
+    div.mb-1
+      label(for='image') #[strong Image (enter image url or attach image file):]
       br
-      input#imagelink(type='text', name='imagelink', value= grocery ? grocery.imagelink : '')
+      label(for='imagelink') Image Url: 
+      input#imagelink.bg-gray-500.mb-1(type='text', name='imagelink', value= grocery ? grocery.imagelink : '')
       br
-      input#imagefile(type='file', name='image', value= grocery ? grocery.imagefile : '')
-    div
-      label(for='price') Price: (USD)
+      input#imagefile.bg-gray-500(type='file', name='image', value= grocery ? grocery.imagefile : '')
+    div.mb-1
+      label(for='price') #[strong Price (USD):]
       br
-      input#price(type='number', placeholder=0.99, step='.01', name='price', value= grocery ? grocery.price : 0.01)
-    div
-      label(for='inventory') Inventory:
+      input#price.bg-gray-500(type='number', placeholder=0.99, step='.01', name='price', value= grocery ? grocery.price : 0.01)
+    div.mb-1
+      label(for='inventory') #[strong Inventory:]
       br
-      input#inventory(type='number', placeholder=0, name='inventory', value= grocery ? grocery.inventory : '')
-    div
-      label(for='plu') PLU: 
+      input#inventory.bg-gray-500(type='number', placeholder=0, name='inventory', value= grocery ? grocery.inventory : '')
+    div.mb-1
+      label(for='plu') #[strong PLU:]
       br
-      input#plu(type='text', placeholder='for produce only', name='plu', value= grocery ? grocery.plu : '')
-    div
-      label(for='category') Category:
+      input#plu.bg-gray-500(type='text', placeholder='for produce only', name='plu', value= grocery ? grocery.plu : '')
+    div.mb-1
+      label(for='category') #[strong Category:]
       br
-      select(type='select', placeholder='Select category' name='category', required='true')
+      select.bg-gray-500(type='select', placeholder='Select category' name='category', required='true')
         - categories.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; });
+        option(value='', disabled selected) Select category
         for category in categories
           if grocery
             option(value=category._id, selected= grocery.category.name===category.name ? 'selected' : false) #{category.name}
           else
             option(value=category._id) #{category.name}
 
-    div
-      label(for='location') Location:
+    div.mb-1
+      label(for='location') #[strong Location:]
       br
-      select(type='select', placeholder='Select location' name='location', required='true')   
+      select.bg-gray-500(type='select', placeholder='Select location' name='location', required='true')   
         - locations.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; });
         option(value='', disabled selected) Select location
         for location in locations
@@ -54,11 +56,11 @@ block content
             option(value=location._id) #{location.name}
 
     div 
-      button 
-        a(href= grocery ? grocery.url : '/inventory/groceries') Back
-      button(type='submit') Submit
+      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+        a(href= grocery ? grocery.url : '/inventory/groceries') Cancel
+      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Submit
 
     if errors
-      ul
+      ul.ml-4
         for error in errors
-          li!=error.msg
+          li.list-disc!=error.msg
