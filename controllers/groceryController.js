@@ -8,6 +8,22 @@ const fs = require('fs');
 const { body, validationResult } = require('express-validator');
 const async = require('async');
 
+function replaceEsc(str) {
+  // replace escaped characters from textbox input
+  const htmlEntities = [
+    {escaped : "&amp;", symbol: "&"},
+    {escaped : "&quot;", symbol : '"'},
+    {escaped : "&#x27;", symbol : "'"},
+    {escaped : "&lt;", symbol : "<"},
+    {escaped : "&gt;", symbol : ">"},
+    {escaped : "&#x2F;", symbol : "/"},
+    {escaped : "&#x5C;", symbol : "\\"}
+  ];
+
+  htmlEntities.forEach(char => str = str.replace(char.escaped, char.symbol));
+  return str;
+}
+
 exports.index = (req, res) => {
   res.render('index', { title: 'Grocery Inventory' });
 };
@@ -42,7 +58,7 @@ exports.grocery_create_post = [
     let grocery = new Grocery(
       {
         name: req.body.name,
-        description: req.body.description,
+        description: replaceEsc(req.body.description),
         price: req.body.price,
         inventory: req.body.inventory,
         category: req.body.category,
@@ -51,7 +67,7 @@ exports.grocery_create_post = [
         imagelink: req.body.imagelink
       }
     );
-    
+    console.log(grocery.description)
     if (!errors.isEmpty()) {
       // There are errors. Render form again with error messages.
       async.parallel({
@@ -148,7 +164,7 @@ exports.grocery_update_post = [
     let grocery = new Grocery(
       {
         name: req.body.name,
-        description: req.body.description,
+        description: replaceEsc(req.body.description),
         price: req.body.price,
         inventory: req.body.inventory,
         category: req.body.category,
@@ -158,7 +174,7 @@ exports.grocery_update_post = [
         _id: req.params.id
       }
     );
-
+    
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
 
