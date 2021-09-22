@@ -1,13 +1,14 @@
 extends layout
 
 block content
-  h1.text-2xl.underline.mb-2= title
   p.font-bold.text-xl Welcome to the App!
+    //- p.mt-1 Node app for tracking inventory in a grocery store.  Items can be viewed individually or by category/location.  
+    //- p.mt-1 Made using Express application generator, mongoDB Atlas, and Pug.
     div
       ul.text-xl
-        li 
-          a(href='/inventory/groceries', class='hover:text-blue-400 hover:underline') Groceries 
-        li 
-          a(href='/inventory/categories', class='hover:text-blue-400 hover:underline') Categories
-        li 
-          a(href='/inventory/locations', class='hover:text-blue-400 hover:underline') Locations 
+        li.ml-2
+          a(href='/inventory/groceries', class='hover:text-blue-400 hover:underline') Grocery List
+        li.ml-2
+          a(href='/inventory/categories', class='hover:text-blue-400 hover:underline') Category List
+        li.ml-2
+          a(href='/inventory/locations', class='hover:text-blue-400 hover:underline') Location List
