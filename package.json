@@ -6,6 +6,9 @@
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "async": "^3.2.0",
     "cookie-parser": "~1.4.4",
