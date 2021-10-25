@@ -1,11 +1,11 @@
 extends layout
 
 block content
-  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+  button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
     a(href='/inventory/location/create') Create a New Location
   h2.text-2xl.mb-2= title
 
-  ul.px-4
+  ul.px-4.text-base
     each location in location_list
       li.list-disc
         a(href=location.url, class='hover:text-blue-400 hover:underline') #{location.name}

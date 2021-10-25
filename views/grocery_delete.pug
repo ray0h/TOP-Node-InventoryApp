@@ -3,7 +3,7 @@ extends layout
 block content
   h2.text-2xl.underline.mb-2 #{title}: #{grocery.name}
 
-  div.my-1
+  div.my-1.text-base
     if grocery_image && grocery_image.length !== 0
       img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'), alt=grocery.name + ' image2', width= 150, length=200)
     else if grocery.imagelink && grocery.imagelink !== ''
@@ -11,7 +11,7 @@ block content
     else
       img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png', alt='no image available', width=100, length=100)
   
-  div
+  div.text-base
     p #[strong Description: ] #{grocery.description}
     p #[strong Price: ] #{grocery.price_format}
     p #[strong Current Inventory: ] #{grocery.inventory}
@@ -29,7 +29,7 @@ block content
       div
         input(type='hidden', name='groceryid', require='true', value=grocery._id)
       
-      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100') 
+      button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100') 
         a(href=grocery.url) Cancel
-      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Delete
+      button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Delete
 

@@ -4,13 +4,13 @@ block content
   h2.text-2xl.underline.mb-2 #{title} : #{location.name}
 
   if location_groceries.length
-    div
+    div.text-base
       p.my-2 Location currently storing items.  Delete the following groceries before deleting location.
       ul.ml-4
         each grocery in location_groceries
           li.list-disc
             a(href=grocery.url, class='hover:text-blue-400 hover:underline') #{grocery.name}
-    button.my-2.mr-2.bg-gray-400.p-1.text-white.rounded
+    button.text-base.my-2.mr-2.bg-gray-400.p-1.text-white.rounded(class='hover:bg-gray-500 hover:text-white')
       a(href=location.url) Back
   else
     p.text-xl.font-bold.text-red-500 Do you really want to delete this location?
@@ -19,6 +19,6 @@ block content
       div
         input(type='hidden', name='locationid', require='true', value=location._id)
       
-      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100') 
+      button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100') 
         a(href=location.url) Cancel
-      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Delete
+      button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Delete

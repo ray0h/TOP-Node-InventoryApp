@@ -1,37 +1,37 @@
 extends layout
 
 block content
-  h2.text-2xl.mb-2 #{title}
+  h2.text-xl.mb-2 #{title}
 
   form(method='POST' action='', enctype='multipart/form-data')
-    div.mb-1
+    div.mb-1.text-base
       label(for='name') #[strong Grocery:]
       br
       input#name.bg-gray-500(type='text', placeholder='Grocery Name', name='name', value= grocery ? grocery.name : '')
-    div.mb-1
+    div.mb-1.text-base
       label(for='description') #[strong Description:]
       br
       textarea#description.bg-gray-500(type='textarea', placeholder='Grocery Description', name='description') #{grocery ?  grocery.description : ''}
-    div.mb-1
+    div.mb-1.text-base
       label(for='image') #[strong Image (enter image url or attach image file):]
       br
       label(for='imagelink') Image Url: 
       input#imagelink.bg-gray-500.mb-1(type='text', name='imagelink', value= grocery ? grocery.imagelink : '')
       br
       input#imagefile.bg-gray-500(type='file', name='image', value= grocery ? grocery.imagefile : '')
-    div.mb-1
+    div.mb-1.text-base
       label(for='price') #[strong Price (USD):]
       br
       input#price.bg-gray-500(type='number', placeholder=0.99, step='.01', name='price', value= grocery ? grocery.price : 0.01)
-    div.mb-1
+    div.mb-1.text-base
       label(for='inventory') #[strong Inventory:]
       br
       input#inventory.bg-gray-500(type='number', placeholder=0, name='inventory', value= grocery ? grocery.inventory : '')
-    div.mb-1
+    div.mb-1.text-base
       label(for='plu') #[strong PLU:]
       br
       input#plu.bg-gray-500(type='text', placeholder='for produce only', name='plu', value= grocery ? grocery.plu : '')
-    div.mb-1
+    div.mb-1.text-base
       label(for='category') #[strong Category:]
       br
       select.bg-gray-500(type='select', placeholder='Select category' name='category', required='true')
@@ -43,7 +43,7 @@ block content
           else
             option(value=category._id) #{category.name}
 
-    div.mb-1
+    div.mb-1.text-base
       label(for='location') #[strong Location:]
       br
       select.bg-gray-500(type='select', placeholder='Select location' name='location', required='true')   
@@ -55,12 +55,12 @@ block content
           else
             option(value=location._id) #{location.name}
 
-    div 
+    div.text-base
       button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
         a(href= grocery ? grocery.url : '/inventory/groceries') Cancel
       button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Submit
 
     if errors
-      ul.ml-4
+      ul.ml-4.text-base
         for error in errors
           li.list-disc!=error.msg

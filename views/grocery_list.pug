@@ -1,14 +1,14 @@
 extends layout
 
 block content
-  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+  button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
     a(href='/inventory/grocery/create') Create a new Grocery
 
   h2.text-2xl.mb-2= title
     
   ul.ml-4
     each grocery in grocery_list
-      li.list-disc
+      li.list-disc.text-base
         a(href=grocery.url, class='hover:text-blue-400 hover:underline') #{grocery.name}
     else
       li.list-disc There are no groceries.

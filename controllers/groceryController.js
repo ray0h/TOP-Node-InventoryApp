@@ -35,8 +35,7 @@ exports.grocery_create_get = (req, res, next) => {
     locations: function(callback) { Location.find(callback) },
   }, function(err, results) {
     if (err) { return next(err); }
-    // res.render('grocery_form', { title: 'Create a new Grocery', categories: results.categories, locations: results.locations });
-    res.render('sandbox_form', { categories: results.categories, locations: results.locations });
+    res.render('grocery_form', { title: 'Create a new Grocery', categories: results.categories, locations: results.locations });
   });
 };
 

@@ -1,10 +1,10 @@
 extends layout
 
 block content
-  button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+  button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
     a(href='/inventory/grocery/create') Create a new Grocery
   
-  div
+  div.text-base
     span.text-2xl #{grocery.name}
     button.text-xl.ml-4.p-1.rounded(class='hover:bg-blue-100 hover:text-gray-400')
       a(href=grocery.url + '/update') 
@@ -13,7 +13,7 @@ block content
       a(href=grocery.url + '/delete')
         i.fa.fa-trash
 
-  div.my-1
+  div.my-1.text-base
     if grocery_image && grocery_image.length !== 0
       img(src='data:image/jpeg;base64,' + grocery_image[0].data.toString('base64'), alt=grocery.name + ' image2', width= 150, length=200)
     else if grocery.imagelink && grocery.imagelink !== ''
@@ -21,7 +21,7 @@ block content
     else
       img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png', alt='no image available', width=100, length=100)
   
-  div
+  div.text-base
     p #[strong #[em Description:] ] #{grocery.description}
     p #[strong #[em Price: ]] #{grocery.price_format}
     p #[strong #[em Current Inventory: ]] #{grocery.inventory}
@@ -32,6 +32,6 @@ block content
     p #[strong #[em Location: ]] 
       a(href=grocery.location.url, class='hover:text-blue-400 hover:underline') #{grocery.location.name}
 
-  div
+  div.text-base
     button.mt-2.mr-2.bg-gray-400.p-1.text-black.rounded(class='hover:bg-gray-500 hover:text-white')
       a(href= title==='Update Location' ? grocery.url : '/inventory/groceries') Back

@@ -2,16 +2,16 @@ extends layout
 
 block content
   h2.text-2xl.underline.mb-2 #{title} : #{category.name}
-  p #[strong Description: ] #{category.description}
+  p.text-base #[strong Description: ] #{category.description}
 
   if category_groceries.length
-    div
+    div.text-base
       p.my-2 Category contains current grocery inventory.  Delete the following groceries before deleting category.
       ul.ml-4
         each grocery in category_groceries
           li.list-disc
             a(href=grocery.url, class='hover: text-blue-400, hover:underline') #{grocery.name}
-    button.my-2.mr-2.bg-gray-400.p-1.text-white.rounded
+    button.text-base.my-2.mr-2.bg-gray-400.p-1.text-white.rounded(class='hover:bg-gray-500 hover:text-white')
       a(href=category.url) Back
   else
     p.text-xl.font-bold.text-red-500 Do you really want to delete this category?
@@ -19,6 +19,6 @@ block content
     form(method='POST', action='')
       div
         input(type='hidden', name='categoryid', require='true', value=category._id)
-      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+      button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
         a(href=category.url) Cancel
-      button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit',class='hover:bg-blue-600 hover:text-gray-100') Delete
+      button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit',class='hover:bg-blue-600 hover:text-gray-100') Delete

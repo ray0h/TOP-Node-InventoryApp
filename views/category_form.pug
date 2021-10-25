@@ -4,20 +4,20 @@ block content
   h2.text-2xl.mb-2 #{title}
 
   form(method='POST' action='')
-    div.mb-1
+    div.mb-1.text-base
       label(for='name') #[strong Category:]
       br
       input#name.bg-gray-500(type='text', placeholder='e.g. Produce, Meats, Dairy, etc.', name='name', value= category ? category.name : '')
-    div.mb-1
+    div.mb-1.text-base
       label(for='description') #[strong Description:]
       br
       textarea#description.bg-gray-500(type='textarea', name='description') #{value= category ? category.description : ''}
       
-    button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
+    button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(class='hover:bg-blue-600 hover:text-gray-100')
       a(href= title==='Update Category' ? category.url : '/inventory/categories') Cancel
-    button.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Submit
+    button.text-base.my-2.mr-2.bg-blue-500.p-1.text-white.rounded(type='submit', class='hover:bg-blue-600 hover:text-gray-100') Submit
     
     if errors
-      ul.ml-4
+      ul.ml-4.text-base
         for error in errors
           li.list-disc!=error.msg
