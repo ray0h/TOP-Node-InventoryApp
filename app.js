@@ -13,7 +13,7 @@ var app = express();
 var mongoose = require('mongoose');
 var mongoDB = config.mongoUrl;
 
-mongoose.set('useFindAndModify', false);
+// mongoose.set('useFindAndModify', false);
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 var db = mongoose.connection;
