@@ -8,4 +8,4 @@ App is based on principles from this [Mozilla Express tutorial](https://develope
 
 The CRUD (create,read, update, destroy) app creates a grocery store inventory with routes for grocery items/categories/locations.  
 
-[Live](https://node-inventory-app.herokuapp.com/)
+[Live](https://top-node-inventory-app.onrender.com/)
