@@ -67,7 +67,6 @@ exports.grocery_create_post = [
         imagelink: req.body.imagelink
       }
     );
-    console.log(grocery.description)
     if (!errors.isEmpty()) {
       // There are errors. Render form again with error messages.
       async.parallel({
